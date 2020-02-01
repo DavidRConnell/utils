@@ -16,6 +16,8 @@ function summarizeUnitTest(results)
 
     fprintf('\n')
     disp(struct2table(r));
+    fprintf('\tTotal Passed:\t%i / %i\n', sum(r.Passed), length(r.Passed))
+    fprintf('\tTotal Duration:\t%f\n\n', sum(r.Duration))
 end
 
 function summarizePerformanceTest(results)
