@@ -2,7 +2,7 @@ function summarizeTests(results)
     switch class(results)
       case 'matlab.unittest.TestResult'
         summarizeUnitTest(results);
-      case 'matlab.perftest.TimeResult'
+      case {'matlab.perftest.TimeResult', 'matlab.unittest.measurement.MeasurementResult'}
         summarizePerformanceTest(results);
     end
 end
