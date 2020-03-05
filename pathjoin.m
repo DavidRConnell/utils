@@ -8,6 +8,10 @@ function combinedPath = pathjoin(patha, pathb, varargin)
     validateattributes(patha, {'char', 'string'}, {})
     validateattributes(pathb, {'char', 'string'}, {})
 
+    if isempty(patha)
+        patha = '.';
+    end
+
     if not(endsWith(patha, '/'))
         patha = [patha, '/'];
     end
