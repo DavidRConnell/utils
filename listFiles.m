@@ -3,7 +3,13 @@ function list = listFiles(dirName)
 %
 %   LIST = LISTFILES(DIR) return a cell array of all files in DIR. Accepts globs.
 
-    files = dir(dirName);
-    list = {files.name}';
-    list = list(~strcmp(list, '.') & ~strcmp(list, '..'));
+    dirContents = dir(dirName);
+    dirContents = {dirContents.name}';
+    list = removeNonFiles(dirContents);
+
+    function list = removeNonFiles(dirContents)
+        list = dirContents(~strcmp(dirContents, '.') & ~strcmp(dirContents, '..'));
+        list = regexp(list, '^\.?.+\..*', 'once', 'match');
+        list = list(contains(list, '.'));
+    end
 end
