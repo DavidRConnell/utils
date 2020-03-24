@@ -2,6 +2,15 @@ function progress(i, n)
 %PROGRESS print the progress of the current loop
 %   PROGRESS(I, N) show the progress of a for loop with total iterations N
 %   and current iteration I.
+%
+%   Example:
+%       import utils.progress;
+%       numLoops = 100;
+%       progress(0, numLoops);
+%       for i = 1:numLoops
+%           % do something.
+%           progress(i, numLoops);
+%       end
 
     numSymbols = 25;
     proportionComplete = (i / n);
