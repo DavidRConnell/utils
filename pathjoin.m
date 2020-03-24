@@ -5,8 +5,8 @@ function combinedPath = pathjoin(patha, pathb, varargin)
 %   FULLPATH = PATHJOIN(PATHA, PATHB, PATH...) return the full path made from
 %   joining all arguments.
 
-    validateattributes(patha, {'char', 'string'}, {})
-    validateattributes(pathb, {'char', 'string'}, {})
+    validateattributes(patha, {'char', 'string', 'cell'}, {})
+    validateattributes(pathb, {'char', 'string', 'cell'}, {})
 
     if isempty(patha)
         patha = '.';
@@ -17,7 +17,7 @@ function combinedPath = pathjoin(patha, pathb, varargin)
     end
 
     pathb = strip(pathb, 'left', '/');
-    combinedPath = [patha pathb];
+    combinedPath = strcat(patha, pathb);
 
     if length(varargin) > 1
         combinedPath = utils.pathjoin(combinedPath, varargin{1}, varargin{2:end});
