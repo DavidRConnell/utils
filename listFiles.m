@@ -9,8 +9,10 @@ function list = listFiles(dirName, showHidden)
     end
 
     dirContents = dir(dirName);
+    dirName = dirContents.folder;
     dirContents = {dirContents.name}';
     list = removeNonFiles(dirContents, showHidden);
+    list = utils.pathjoin(dirName, list);
 
     function list = removeNonFiles(dirContents, showHidden)
         if showHidden

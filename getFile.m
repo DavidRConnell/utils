@@ -13,5 +13,4 @@ function path = getFile(dir, index)
     assert(index <= length(files), 'File index out of range.')
 
     file = files{index};
-    path = utils.pathjoin(dir, file);
 end
