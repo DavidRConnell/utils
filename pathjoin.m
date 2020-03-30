@@ -12,11 +12,11 @@ function combinedPath = pathjoin(patha, pathb, varargin)
         patha = '.';
     end
 
-    if not(endsWith(patha, '/'))
-        patha = [patha, '/'];
+    if not(endsWith(patha, filesep))
+        patha = [patha, filesep];
     end
 
-    pathb = strip(pathb, 'left', '/');
+    pathb = strip(pathb, 'left', filesep);
     combinedPath = strcat(patha, pathb);
 
     if length(varargin) > 1
