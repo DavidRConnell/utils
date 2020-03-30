@@ -22,6 +22,7 @@ function list = listFiles(dirName, showHidden)
         end
 
         list = regexp(dirContents, pattern, 'once', 'match');
-        list = list(contains(list, '.'));
+        iscellempty = @(x) cellfun(@isempty, x);
+        list = list(~iscellempty(list));
     end
 end
