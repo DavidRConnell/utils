@@ -22,6 +22,6 @@ function progress(i, n)
             100 * proportionComplete)
 
     if i == n
-        fprintf('\n')
+        fprintf('\n\n')
     end
 end
