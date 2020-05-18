@@ -1,5 +1,5 @@
 function str = strrm(str, pattern)
-%STRRM remove all intstances of pattern from a string
+%STRRM remove all instances of pattern from a string
 %   STR = STRRM(STR, PATTERN) find all instances of PATTERN in STR and remove them.
 %
 %   See also: REGEXREP.
