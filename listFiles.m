@@ -41,11 +41,13 @@ function list = listFiles(dirName, varargin)
 
         list = regexp(dirContents, pattern, 'once', 'match');
 
+        iscellempty = @(x) cellfun(@isempty, x);
         if regexpPattern
             matches = regexp(list, regexpPattern, 'once');
+            list = list(~iscellempty(matches));
+        else
+            list = list(~iscellempty(list));
         end
 
-        iscellempty = @(x) cellfun(@isempty, x);
-        list = list(~iscellempty(matches));
     end
 end
