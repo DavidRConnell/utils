@@ -1,4 +1,4 @@
-function list = listFiles(dirName, varargin)
+function files = listFiles(directories, varargin)
 %LISTFILES list all files in DIR
 %
 %   LIST = LISTFILES(DIR) return a cell array of all files in DIR. Accepts globs.
@@ -20,19 +20,21 @@ function list = listFiles(dirName, varargin)
     p.addParameter('recursive', false, @islogical);
     p.parse(varargin{:});
 
-    if ~iscell(dirName)
-        dirName = {dirName};
-    elseif size(dirName, 1) == 1
-        dirName = dirName';
+    if ~iscell(directories)
+        directories = {directories};
+    elseif size(directories, 1) == 1
+        directories = directories';
     end
 
-    dirContents = {};
-    for d = dirName'
+    dirs = cellfun(@(x) isempty(regexp(x, '\..*$')) && isdir(x), directories);
+    files = directories(~dirs)';
+    directories = directories(dirs);
+    for d = directories'
         tmp = privateListFiles(d{1});
-        dirContents = {dirContents{:}, tmp{:}};
+        files = {files{:}, tmp{:}};
     end
 
-    list = unique(dirContents)';
+    files = unique(files)';
 
     function dirContents = privateListFiles(name)
         dirContents = dir(name);
