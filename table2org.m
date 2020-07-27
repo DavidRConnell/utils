@@ -9,6 +9,9 @@ function orgtbl = table2org(table, varargin)
 %   'HEAD' to pass to HEAD (equivalent to setting N to 8), 'TAIL' to pass to TAIL
 %   (equivalent to setting N to -8), or 'ALL' to display all rows.
 %
+%   TABLE2ORG(TABLE, 'COLUMNS', INDICES) Display columns in columns numbers
+%   in INDICES. Defaults to all columns.
+%
 %   See also HEAD, TAIL.
 
     isnumrows = @(x) (isnumeric(x) && utils.isnaturalnumber(abs(x)) && x ~= 0) || ...
@@ -17,6 +20,7 @@ function orgtbl = table2org(table, varargin)
     p = inputParser;
     p.addParameter('rowNames', false, @islogical);
     p.addParameter('numRows', 'head', isnumrows);
+    p.addParameter('columns', 1:size(table, 2), @isvector)
     p.parse(varargin{:});
 
     switch lower(p.Results.numRows)
@@ -33,6 +37,8 @@ function orgtbl = table2org(table, varargin)
             table = tail(table, -p.Results.numRows);
         end
     end
+
+    table = table(:, p.Results.columns);
 
     colnames = table.Properties.VariableNames;
     rownames = table.Properties.RowNames;
