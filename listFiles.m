@@ -26,9 +26,10 @@ function files = listFiles(directories, varargin)
         directories = directories';
     end
 
-    dirs = cellfun(@(x) isempty(regexp(x, '\..*$')) && isdir(x), directories);
-    files = directories(~dirs)';
-    directories = directories(dirs);
+    dirs = cellfun(@(x) isempty(regexp(x, '\.[^\*]*$')) && isdir(x), directories);
+    globs = cellfun(@(x) ~isempty(regexp(x, '\*')), directories);
+    files = directories(~dirs & ~globs)';
+    directories = directories(dirs | globs);
     for d = directories'
         tmp = privateListFiles(d{1});
         files = {files{:}, tmp{:}};
@@ -38,6 +39,11 @@ function files = listFiles(directories, varargin)
 
     function dirContents = privateListFiles(name)
         dirContents = dir(name);
+        if isempty(dirContents)
+            dirContents = {};
+            return
+        end
+
         dirName = dirContents.folder;
         dirContents = {dirContents.name};
         dirContents = filterList(dirContents, p.Results.showHidden, p.Results.pattern);
