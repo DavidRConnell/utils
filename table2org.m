@@ -1,10 +1,38 @@
-function orgtbl = table2org(table, displayrownames)
+function orgtbl = table2org(table, varargin)
 %TABLE2ORG Convert a table object to a org-tbl
 %   TABLE2ORG(TABLE) converts HEAD(TABLE) to org-tbl format.
-%   TABLE2ORG(TABLE, DISPLAYROWNAMES) if DISPLAYROWNAMES is true, include the
+%   TABLE2ORG(TABLE, 'ROWNAMES', true) if ROWNAMES is true, include the
 %   row names in the resulting table.
+%   TABLE2ORG(TABLE, 'NUMROWS', N) display N rows of TABLE. By default pass
+%   table to HEAD returning only the first 8 rows. NUMROWS can be set to a
+%   number to get the first N rows, a negative number to get the last N rows,
+%   'HEAD' to pass to HEAD (equivalent to setting N to 8), 'TAIL' to pass to TAIL
+%   (equivalent to setting N to -8), or 'ALL' to display all rows.
+%
+%   See also HEAD, TAIL.
 
-    table = head(table);
+    isnumrows = @(x) (isnumeric(x) && utils.isnaturalnumber(abs(x)) && x ~= 0) || ...
+        ismember(lower(x), {'head', 'tail', 'all'});
+
+    p = inputParser;
+    p.addParameter('rowNames', false, @islogical);
+    p.addParameter('numRows', 'head', isnumrows);
+    p.parse(varargin{:});
+
+    switch lower(p.Results.numRows)
+      case 'all'
+        % Leave table alone.
+      case 'head'
+        table = head(table);
+      case 'tail'
+        table = tail(table);
+      otherwise
+        if p.Results.numRows > 0
+            table = head(table, p.Results.numRows);
+        else
+            table = tail(table, -p.Results.numRows);
+        end
+    end
 
     colnames = table.Properties.VariableNames;
     rownames = table.Properties.RowNames;
@@ -13,7 +41,7 @@ function orgtbl = table2org(table, displayrownames)
 
     lines = cell(size(table, 1), 1);
     for rowi = 1:size(table, 1)
-        if nargin > 1 && displayrownames
+        if p.Results.rowNames
             line = [rownames{rowi} '|'];
         else
             line = '|';
